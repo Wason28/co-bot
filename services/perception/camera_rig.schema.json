@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Co-Bot Dual Camera Rig Config",
+  "type": "object",
+  "required": [
+    "rig_id",
+    "deployment_mode",
+    "capture_backend",
+    "streams",
+    "fusion",
+    "recording"
+  ],
+  "properties": {
+    "rig_id": {
+      "const": "dual-camera-desktop-rig"
+    },
+    "deployment_mode": {
+      "enum": [
+        "hybrid",
+        "real",
+        "replay"
+      ]
+    },
+    "capture_backend": {
+      "enum": [
+        "opencv-placeholder",
+        "replay"
+      ]
+    },
+    "streams": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "camera_id",
+          "device_selector",
+          "role",
+          "frame_format",
+          "resolution"
+        ],
+        "properties": {
+          "camera_id": {
+            "enum": [
+              "wrist-camera",
+              "laptop-camera"
+            ]
+          },
+          "device_selector": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "fine-manipulation",
+              "global-view"
+            ]
+          },
+          "frame_format": {
+            "enum": [
+              "jpeg"
+            ]
+          },
+          "resolution": {
+            "type": "object",
+            "required": [
+              "width",
+              "height"
+            ],
+            "properties": {
+              "width": {
+                "type": "integer",
+                "minimum": 320
+              },
+              "height": {
+                "type": "integer",
+                "minimum": 240
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "fusion": {
+      "type": "object",
+      "required": [
+        "primary_stream",
+        "context_stream",
+        "sync_tolerance_ms"
+      ],
+      "properties": {
+        "primary_stream": {
+          "const": "wrist-camera"
+        },
+        "context_stream": {
+          "const": "laptop-camera"
+        },
+        "sync_tolerance_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        }
+      },
+      "additionalProperties": false
+    },
+    "recording": {
+      "type": "object",
+      "required": [
+        "frame_event_log_path",
+        "video_bundle_dir"
+      ],
+      "properties": {
+        "frame_event_log_path": {
+          "type": "string"
+        },
+        "video_bundle_dir": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

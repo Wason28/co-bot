@@ -1,0 +1,21 @@
+{
+  "session_id": "session-hybrid-smoke-001",
+  "task_id": "task-hybrid-smoke-001",
+  "correlation_id": "corr-hybrid-smoke-001",
+  "route_decision": "mixed",
+  "risk_level": "confirm",
+  "confirmation_state": "completed",
+  "last_safe_checkpoint_id": "ckpt-m1-post-exec",
+  "last_completed_step": "robot-executed",
+  "pending_confirmation_prompt": "",
+  "active_model_ids": {
+    "supervisor": "supervisor-stub-v1",
+    "social": "qwen-placeholder-v1",
+    "action": "smolvla-placeholder-v1"
+  },
+  "latency_marks": {
+    "T_start": "2026-04-15T06:51:11+00:00",
+    "T_decision": "2026-04-15T06:51:12.800000+00:00",
+    "T_exec": "2026-04-15T06:51:15.800000+00:00"
+  }
+}

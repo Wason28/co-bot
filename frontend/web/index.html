@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Co-Bot M1 Monitoring Shell</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f1ea;
+        --panel: #fffaf2;
+        --ink: #1b1b18;
+        --accent: #9d5c2f;
+        --accent-soft: #f4ddc6;
+        --muted: #6d665f;
+        --border: #d7c8b6;
+        --ok: #2d6a4f;
+        --warn: #b85c00;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Iowan Old Style", "Palatino Linotype", serif;
+        background: radial-gradient(circle at top, #fff7ed, var(--bg));
+        color: var(--ink);
+      }
+      main {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        padding: 24px;
+      }
+      section {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 10px 30px rgba(72, 48, 24, 0.08);
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+      .hero {
+        grid-column: 1 / -1;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent);
+        font-size: 0.95rem;
+      }
+      .pill.ok {
+        background: #e5f4ec;
+        color: var(--ok);
+      }
+      .pill.warn {
+        background: #fff0df;
+        color: var(--warn);
+      }
+      .kv {
+        display: grid;
+        gap: 8px;
+      }
+      .kv div {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px dashed var(--border);
+        padding-bottom: 8px;
+      }
+      .kv div:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+      .video-grid {
+        display: grid;
+        gap: 12px;
+      }
+      .video {
+        min-height: 160px;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        background: linear-gradient(135deg, #f1e6d8, #fffdf8);
+        padding: 14px;
+      }
+      .video strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+      .camera-note {
+        margin: 0;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      code,
+      pre {
+        font-size: 0.95rem;
+      }
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <h1>Co-Bot M1 Monitoring Shell</h1>
+        <p class="muted">
+          Frontend shell for live task state, human-visible safety prompts, dual-camera placeholders,
+          and evidence bundle lookup during the M1 real-risk slice.
+        </p>
+        <div id="summary-pills"></div>
+      </section>
+
+      <section>
+        <h2>Task State</h2>
+        <div id="task-state" class="kv"></div>
+      </section>
+
+      <section>
+        <h2>Safety Prompt</h2>
+        <p id="safety-summary" class="muted"></p>
+        <pre id="safety-prompt"></pre>
+      </section>
+
+      <section>
+        <h2>Latency</h2>
+        <div id="latency" class="kv"></div>
+      </section>
+
+      <section>
+        <h2>Live Camera Placeholders</h2>
+        <div id="camera-grid" class="video-grid"></div>
+      </section>
+
+      <section>
+        <h2>Evidence Bundle</h2>
+        <p><code id="evidence-path"></code></p>
+        <ul id="evidence-files"></ul>
+      </section>
+    </main>
+    <script>
+      const pill = (label, variant = "") =>
+        `<span class="pill ${variant}">${label}</span>`;
+
+      const renderKeyValues = (elementId, rows) => {
+        document.getElementById(elementId).innerHTML = rows
+          .map(([label, value]) => `<div><strong>${label}</strong><span>${value}</span></div>`)
+          .join("");
+      };
+
+      fetch("./mock-state.json")
+        .then((response) => response.json())
+        .then((payload) => {
+          document.getElementById("summary-pills").innerHTML = [
+            pill(`Scenario: ${payload.scenario_id}`),
+            pill(`Task: ${payload.task_state}`, payload.task_state === "completed" ? "ok" : "warn"),
+            pill(`Safety: ${payload.confirmation_state}`, payload.confirmation_state === "completed" ? "ok" : "warn"),
+          ].join(" ");
+
+          renderKeyValues("task-state", [
+            ["session_id", payload.session_id],
+            ["task_id", payload.task_id],
+            ["route_decision", payload.route_decision],
+            ["risk_level", payload.risk_level],
+            ["execution_state", payload.execution_state],
+            ["last_safe_checkpoint_id", payload.last_safe_checkpoint_id],
+            ["last_completed_step", payload.last_completed_step],
+          ]);
+
+          renderKeyValues("latency", [
+            ["T_decision", `${payload.latency.decision_latency_ms} ms`],
+            ["T_exec", `${payload.latency.exec_latency_ms} ms`],
+            ["threshold", payload.latency.within_threshold ? "within 10s gate" : "exceeded"],
+          ]);
+
+          document.getElementById("safety-summary").textContent = payload.safety_prompt.summary;
+          document.getElementById("safety-prompt").textContent = payload.safety_prompt.body;
+
+          document.getElementById("camera-grid").innerHTML = payload.camera_feeds
+            .map(
+              (feed) => `
+                <div class="video">
+                  <strong>${feed.label}</strong>
+                  <p class="camera-note muted">${feed.placeholder}</p>
+                  <p class="camera-note"><code>${feed.device_path}</code></p>
+                  <p class="camera-note">status: <strong>${feed.status}</strong></p>
+                </div>
+              `
+            )
+            .join("");
+
+          document.getElementById("evidence-path").textContent = payload.evidence_bundle.path;
+          document.getElementById("evidence-files").innerHTML = payload.evidence_bundle.files
+            .map((file) => `<li><code>${file}</code></li>`)
+            .join("");
+        });
+    </script>
+  </body>
+</html>

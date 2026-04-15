@@ -1,0 +1,21 @@
+{
+  "version": "m1-training-floor-v1",
+  "target_scenario": "demo-full-flow",
+  "required_artifacts": [
+    "training/run-config.json",
+    "training/dataset-manifest.json",
+    "training/metrics.json",
+    "training/summary.md"
+  ],
+  "primary_metric": {
+    "name": "demo_full_flow_action_completion_rate",
+    "numerator": "successful completed demo-full-flow placeholder runs",
+    "denominator": "all recorded demo-full-flow placeholder runs",
+    "threshold": 0.34,
+    "interpretation": "at least one completed placeholder run within the frozen three-attempt budget"
+  },
+  "secondary_metric": {
+    "name": "demo_full_flow_exec_latency_ms_p95",
+    "threshold": 10000
+  }
+}

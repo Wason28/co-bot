@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local runtime and temporary files
+.pytest_cache/
+.mypy_cache/
+
+# OMX runtime state
+.omx/logs/
+.omx/state/
+.omx/reports/
+.omx/metrics.json
+.omx/tmux-hook.json
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db

@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Co-Bot Robot MCP Device Config",
+  "type": "object",
+  "required": [
+    "robot_arm",
+    "deployment_mode",
+    "connection",
+    "motion_limits",
+    "status_polling_ms",
+    "supported_scenarios",
+    "control_log_path",
+    "status_log_path"
+  ],
+  "properties": {
+    "robot_arm": {
+      "const": "SO-ARM101"
+    },
+    "deployment_mode": {
+      "enum": [
+        "stub",
+        "hybrid",
+        "real"
+      ]
+    },
+    "connection": {
+      "type": "object",
+      "required": [
+        "transport",
+        "port",
+        "baud_rate"
+      ],
+      "properties": {
+        "transport": {
+          "enum": [
+            "usb-serial",
+            "replay",
+            "loopback"
+          ]
+        },
+        "port": {
+          "type": "string"
+        },
+        "baud_rate": {
+          "type": "integer",
+          "minimum": 9600
+        }
+      },
+      "additionalProperties": false
+    },
+    "motion_limits": {
+      "type": "object",
+      "required": [
+        "max_joint_delta_deg",
+        "workspace_z_min_mm",
+        "workspace_z_max_mm"
+      ],
+      "properties": {
+        "max_joint_delta_deg": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "workspace_z_min_mm": {
+          "type": "number"
+        },
+        "workspace_z_max_mm": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "status_polling_ms": {
+      "type": "integer",
+      "minimum": 50
+    },
+    "supported_scenarios": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "demo-full-flow",
+          "demo-conversation-grasp",
+          "demo-sorting",
+          "demo-real-risk-slice"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "control_log_path": {
+      "type": "string"
+    },
+    "status_log_path": {
+      "type": "string"
+    },
+    "confirmation_required_scenarios": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "demo-dangerous-action",
+          "demo-real-risk-slice"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "move_joints_command": {
+      "type": "object",
+      "required": [
+        "joint_targets_deg",
+        "speed_profile"
+      ],
+      "properties": {
+        "joint_targets_deg": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "speed_profile": {
+          "enum": [
+            "slow",
+            "normal"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "move_end_effector_command": {
+      "type": "object",
+      "required": [
+        "pose_mm",
+        "speed_profile"
+      ],
+      "properties": {
+        "pose_mm": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "z": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "speed_profile": {
+          "enum": [
+            "slow",
+            "normal"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "set_gripper_command": {
+      "type": "object",
+      "required": [
+        "state"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "open",
+            "close"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "read_status_command": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "play_expression_motion_command": {
+      "type": "object",
+      "required": [
+        "expression"
+      ],
+      "properties": {
+        "expression": {
+          "enum": [
+            "wake",
+            "acknowledge",
+            "celebrate"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "halt_motion_command": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

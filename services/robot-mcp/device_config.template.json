@@ -1,0 +1,14 @@
+{
+  "profile": "so-arm101-hybrid-m1",
+  "controller": "so-arm101",
+  "mode": "hybrid",
+  "transport": "usb-serial-placeholder",
+  "serial_port": "/dev/ttyACM0",
+  "baud_rate": 115200,
+  "workspace_profile": "desktop-benchmark-v1",
+  "confirmation_required_for": [
+    "demo-dangerous-action",
+    "demo-real-risk-slice"
+  ],
+  "log_artifact": "robot/robot-control.log"
+}

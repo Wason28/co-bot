@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Co-Bot Latency Record",
+  "type": "object",
+  "required": [
+    "scenario_id",
+    "run_id",
+    "attempt_index",
+    "T_start",
+    "T_decision",
+    "T_exec",
+    "decision_latency_ms",
+    "exec_latency_ms",
+    "within_threshold"
+  ],
+  "properties": {
+    "scenario_id": {"type": "string"},
+    "run_id": {"type": "string"},
+    "attempt_index": {"type": "integer", "minimum": 1, "maximum": 3},
+    "T_start": {"type": "string"},
+    "T_decision": {"type": "string"},
+    "T_exec": {"type": "string"},
+    "decision_latency_ms": {"type": "integer", "minimum": 0},
+    "exec_latency_ms": {"type": "integer", "minimum": 0},
+    "within_threshold": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

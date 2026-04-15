@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Co-Bot Evidence Result",
+  "type": "object",
+  "required": [
+    "scenario_id",
+    "run_id",
+    "attempt_index",
+    "passed",
+    "final_state",
+    "metrics",
+    "degradations",
+    "failure_reasons"
+  ],
+  "properties": {
+    "scenario_id": {"type": "string"},
+    "run_id": {"type": "string"},
+    "attempt_index": {"type": "integer", "minimum": 1, "maximum": 3},
+    "passed": {"type": "boolean"},
+    "final_state": {"type": "string"},
+    "metrics": {
+      "type": "object",
+      "required": ["exec_latency_ms"],
+      "properties": {
+        "exec_latency_ms": {"type": "integer"},
+        "face_detected_within_5s": {"type": "boolean"},
+        "wrist_face_coverage_ratio": {"type": "number"},
+        "expression_motion_count": {"type": "integer"},
+        "sort_success": {"type": "boolean"},
+        "confirmation_shown": {"type": "boolean"},
+        "recovery_fields_preserved": {"type": "boolean"}
+      }
+    },
+    "degradations": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "failure_reasons": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": false
+}

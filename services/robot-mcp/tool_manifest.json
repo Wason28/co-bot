@@ -1,0 +1,44 @@
+{
+  "service": "robot-mcp",
+  "mode": "m1-hybrid-ready",
+  "hardware_target": "so-arm101",
+  "workspace_profile": "desktop-benchmark-v1",
+  "supported_scenarios": [
+    "demo-dangerous-action",
+    "demo-full-flow",
+    "demo-real-risk-slice"
+  ],
+  "required_evidence": [
+    "robot/robot-control.log",
+    "events.jsonl",
+    "checkpoints/pre-exec.json",
+    "checkpoints/post-exec.json",
+    "redis/session-context.json"
+  ],
+  "tools": [
+    {
+      "name": "move_joints",
+      "safe_mode": true
+    },
+    {
+      "name": "move_end_effector",
+      "safe_mode": true
+    },
+    {
+      "name": "set_gripper",
+      "safe_mode": true
+    },
+    {
+      "name": "read_status",
+      "safe_mode": true
+    },
+    {
+      "name": "play_expression_motion",
+      "safe_mode": true
+    },
+    {
+      "name": "acknowledge_confirmation",
+      "safe_mode": true
+    }
+  ]
+}

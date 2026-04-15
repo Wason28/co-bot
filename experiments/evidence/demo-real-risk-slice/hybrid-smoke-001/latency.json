@@ -1,0 +1,11 @@
+{
+  "scenario_id": "demo-real-risk-slice",
+  "run_id": "hybrid-smoke-001",
+  "attempt_index": 1,
+  "T_start": "2026-04-15T06:51:11+00:00",
+  "T_decision": "2026-04-15T06:51:12.800000+00:00",
+  "T_exec": "2026-04-15T06:51:15.800000+00:00",
+  "decision_latency_ms": 1800,
+  "exec_latency_ms": 4800,
+  "within_threshold": true
+}

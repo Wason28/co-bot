@@ -1,0 +1,53 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Co-Bot Backend Stub API",
+    "version": "0.2.0-m1-demo"
+  },
+  "components": {
+    "schemas": {
+      "TaskSubmission": {
+        "type": "object",
+        "required": ["session_id", "task_id", "turn_id", "correlation_id", "input_text", "scenario_id"],
+        "properties": {
+          "session_id": {"type": "string"},
+          "task_id": {"type": "string"},
+          "turn_id": {"type": "string"},
+          "correlation_id": {"type": "string"},
+          "input_text": {"type": "string"},
+          "scenario_id": {"type": "string"}
+        }
+      },
+      "TaskExecutionResponse": {
+        "type": "object",
+        "required": ["submission", "policy_decision", "shared_state", "checkpoints", "redis_context", "latency", "events"],
+        "properties": {
+          "submission": {"type": "object"},
+          "policy_decision": {"type": "object"},
+          "shared_state": {"type": "object"},
+          "checkpoints": {"type": "array", "items": {"type": "object"}},
+          "redis_context": {"type": "object"},
+          "latency": {"type": "object"},
+          "events": {"type": "array", "items": {"type": "object"}}
+        }
+      }
+    }
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Return M1 demo backend health"
+      }
+    },
+    "/tasks": {
+      "post": {
+        "summary": "Submit a task to the deterministic LangGraph demo runtime"
+      }
+    },
+    "/models": {
+      "get": {
+        "summary": "List registered social/action model placeholders"
+      }
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "session_id": "session-hybrid-smoke-001",
+  "task_id": "task-hybrid-smoke-001",
+  "scenario_id": "demo-real-risk-slice",
+  "task_state": "completed",
+  "execution_state": "hybrid-lane1-ready",
+  "route_decision": "mixed",
+  "confirmation_state": "completed",
+  "risk_level": "confirm",
+  "last_safe_checkpoint_id": "ckpt-m1-post-exec",
+  "last_completed_step": "robot-executed",
+  "safety_prompt": {
+    "summary": "The M1 shell keeps the last operator-visible confirmation prompt on screen even after execution completes.",
+    "body": "Operator confirmation required before real/hybrid arm motion.\n- verify wrist-camera framing\n- verify desk safe zone clear\n- confirm execution token recorded"
+  },
+  "latency": {
+    "decision_latency_ms": 1800,
+    "exec_latency_ms": 4800,
+    "within_threshold": true
+  },
+  "camera_feeds": [
+    {
+      "label": "Wrist Camera",
+      "device_path": "/dev/video0",
+      "status": "placeholder-bound",
+      "placeholder": "Live JPEG/WebSocket feed lands here once the perception service is wired."
+    },
+    {
+      "label": "Laptop Camera",
+      "device_path": "/dev/video1",
+      "status": "placeholder-bound",
+      "placeholder": "Global desk-view placeholder mirrors the M1 dual-camera capture contract."
+    }
+  ],
+  "evidence_bundle": {
+    "path": "experiments/evidence/demo-real-risk-slice/hybrid-smoke-001",
+    "files": [
+      "metadata.json",
+      "summary.md",
+      "events.jsonl",
+      "latency.json",
+      "result.json",
+      "checkpoints/pre-exec.json",
+      "checkpoints/post-exec.json",
+      "redis/session-context.json",
+      "perception/frame-sources.json",
+      "robot/robot-control.log",
+      "video/run.mp4"
+    ]
+  }
+}

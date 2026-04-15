@@ -1,0 +1,25 @@
+{
+  "version": "m1-real-risk-device-integration-v1",
+  "scenario_id": "demo-real-risk-slice",
+  "robot": {
+    "manifest_path": "services/robot-mcp/tool_manifest.json",
+    "config_template_path": "services/robot-mcp/device_config.template.json"
+  },
+  "perception": {
+    "contract_path": "services/perception/camera_contract.json",
+    "rig_template_path": "services/perception/camera_rig.template.json"
+  },
+  "required_real_components": [
+    "robot-control-log",
+    "dual-camera-frame-sources",
+    "policy-gate-decision",
+    "checkpoint-record",
+    "redis-record",
+    "latency-record"
+  ],
+  "log_targets": {
+    "robot_control": "logs/robot-control/<run-id>.jsonl",
+    "robot_status": "logs/robot-status/<run-id>.jsonl",
+    "camera_frames": "logs/camera-frames/<run-id>.jsonl"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "version": "m1-lane1-v1",
+  "mode": "dual-camera-hybrid-ready",
+  "streams": [
+    {
+      "camera_id": "wrist-camera",
+      "role": "fine-manipulation",
+      "device_kind": "usb",
+      "frame_format": "jpeg",
+      "capture_profile": "640x480@15",
+      "required_for": [
+        "demo-full-flow",
+        "demo-conversation-grasp",
+        "demo-sorting",
+        "demo-real-risk-slice"
+      ],
+      "evidence_artifacts": [
+        "perception/frame-sources.json",
+        "events.jsonl"
+      ]
+    },
+    {
+      "camera_id": "laptop-camera",
+      "role": "global-view",
+      "device_kind": "builtin",
+      "frame_format": "jpeg",
+      "capture_profile": "1280x720@15",
+      "required_for": [
+        "demo-full-flow",
+        "demo-dangerous-action",
+        "demo-real-risk-slice"
+      ],
+      "evidence_artifacts": [
+        "perception/frame-sources.json",
+        "events.jsonl"
+      ]
+    }
+  ],
+  "real_risk_slice": {
+    "scenario_id": "demo-real-risk-slice",
+    "required_camera_ids": [
+      "wrist-camera",
+      "laptop-camera"
+    ],
+    "sync_mode": "best-effort-timestamp",
+    "evidence_file": "perception/frame-sources.json"
+  }
+}

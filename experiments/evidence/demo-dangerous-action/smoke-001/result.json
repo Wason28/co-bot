@@ -1,0 +1,21 @@
+{
+  "scenario_id": "demo-dangerous-action",
+  "run_id": "smoke-001",
+  "attempt_index": 1,
+  "passed": true,
+  "final_state": "awaiting_confirm",
+  "metrics": {
+    "exec_latency_ms": 3200,
+    "confirmation_shown": true,
+    "sort_success": false,
+    "face_detected_within_5s": false,
+    "wrist_face_coverage_ratio": 0.0,
+    "expression_motion_count": 0,
+    "recovery_fields_preserved": false
+  },
+  "degradations": [
+    "m0-stub-no-live-hardware",
+    "m0-stub-no-live-models"
+  ],
+  "failure_reasons": []
+}

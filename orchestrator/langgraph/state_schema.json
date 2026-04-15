@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Co-Bot Shared State",
+  "type": "object",
+  "required": [
+    "session_id",
+    "task_id",
+    "turn_id",
+    "correlation_id",
+    "user_input",
+    "task_type",
+    "route_decision",
+    "risk_level",
+    "confirmation_state",
+    "perception_summary",
+    "action_plan_summary",
+    "execution_state",
+    "recovery_pointer",
+    "last_safe_checkpoint_id",
+    "last_completed_step",
+    "pending_confirmation_prompt",
+    "active_model_ids",
+    "latency_marks"
+  ],
+  "properties": {
+    "session_id": {"type": "string"},
+    "task_id": {"type": "string"},
+    "turn_id": {"type": "string"},
+    "correlation_id": {"type": "string"},
+    "user_input": {"type": "string"},
+    "task_type": {"enum": ["social", "action", "mixed"]},
+    "route_decision": {"enum": ["social", "action", "mixed", "blocked"]},
+    "risk_level": {"enum": ["safe", "confirm", "dangerous"]},
+    "confirmation_state": {
+      "enum": [
+        "proposed",
+        "gated",
+        "awaiting_confirm",
+        "approved",
+        "rejected",
+        "executing",
+        "completed",
+        "aborted",
+        "resumed"
+      ]
+    },
+    "perception_summary": {"type": "string"},
+    "action_plan_summary": {"type": "string"},
+    "execution_state": {"type": "string"},
+    "recovery_pointer": {"type": "string"},
+    "last_safe_checkpoint_id": {"type": "string"},
+    "last_completed_step": {"type": "string"},
+    "pending_confirmation_prompt": {"type": "string"},
+    "active_model_ids": {
+      "type": "object",
+      "required": ["supervisor", "social", "action"],
+      "properties": {
+        "supervisor": {"type": "string"},
+        "social": {"type": "string"},
+        "action": {"type": "string"}
+      }
+    },
+    "latency_marks": {
+      "type": "object",
+      "required": ["T_start", "T_decision", "T_exec"],
+      "properties": {
+        "T_start": {"type": "string"},
+        "T_decision": {"type": "string"},
+        "T_exec": {"type": "string"}
+      }
+    }
+  },
+  "additionalProperties": true
+}

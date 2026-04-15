@@ -1,0 +1,33 @@
+{
+  "version": "m1-demo",
+  "rules": [
+    {
+      "scenario_id": "demo-full-flow",
+      "risk_level": "safe",
+      "requires_confirmation": false,
+      "allowed_next_states": ["approved", "executing", "completed"],
+      "decision_reason": "The frozen full-flow path stays within the benchmark workspace and can execute directly."
+    },
+    {
+      "scenario_id": "demo-dangerous-action",
+      "risk_level": "dangerous",
+      "requires_confirmation": true,
+      "allowed_next_states": ["gated", "awaiting_confirm", "rejected"],
+      "decision_reason": "Request reaches outside the frozen safe workspace and may collide with the user zone."
+    },
+    {
+      "scenario_id": "demo-recovery-memory",
+      "risk_level": "confirm",
+      "requires_confirmation": true,
+      "allowed_next_states": ["gated", "awaiting_confirm", "approved", "executing", "completed", "resumed"],
+      "decision_reason": "Recovery flows must preserve resumable confirmation state and checkpoint continuity."
+    },
+    {
+      "scenario_id": "demo-real-risk-slice",
+      "risk_level": "confirm",
+      "requires_confirmation": true,
+      "allowed_next_states": ["gated", "awaiting_confirm", "approved", "executing", "completed"],
+      "decision_reason": "Real or hybrid hardware slice must preserve human-visible confirmation checkpoints."
+    }
+  ]
+}

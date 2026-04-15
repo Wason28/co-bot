@@ -1,0 +1,36 @@
+{
+  "rig_id": "dual-camera-desktop-rig",
+  "deployment_mode": "hybrid",
+  "capture_backend": "opencv-placeholder",
+  "streams": [
+    {
+      "camera_id": "wrist-camera",
+      "device_selector": "usb-index-0",
+      "role": "fine-manipulation",
+      "frame_format": "jpeg",
+      "resolution": {
+        "width": 640,
+        "height": 480
+      }
+    },
+    {
+      "camera_id": "laptop-camera",
+      "device_selector": "builtin-index-0",
+      "role": "global-view",
+      "frame_format": "jpeg",
+      "resolution": {
+        "width": 1280,
+        "height": 720
+      }
+    }
+  ],
+  "fusion": {
+    "primary_stream": "wrist-camera",
+    "context_stream": "laptop-camera",
+    "sync_tolerance_ms": 250
+  },
+  "recording": {
+    "frame_event_log_path": "logs/camera-frames/<run-id>.jsonl",
+    "video_bundle_dir": "experiments/evidence/<scenario-id>/<run-id>/video"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "supervisor": {
+    "id": "supervisor-stub-v1",
+    "provider": "stub",
+    "purpose": "routing"
+  },
+  "social": {
+    "id": "qwen-placeholder-v1",
+    "provider": "ollama-placeholder",
+    "purpose": "wake-greet-conversation"
+  },
+  "action": {
+    "id": "smolvla-placeholder-v1",
+    "provider": "lerobot-placeholder",
+    "purpose": "vision-language-action"
+  }
+}

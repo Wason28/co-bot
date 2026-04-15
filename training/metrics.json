@@ -1,0 +1,13 @@
+{
+  "run_id": "ft-demo-full-flow-placeholder-001",
+  "target_scenario": "demo-full-flow",
+  "metrics": {
+    "demo_full_flow_completion_rate": 0.34,
+    "demo_full_flow_exec_latency_ms_p95": 4800
+  },
+  "mapping": {
+    "m2_demo": "demo-full-flow",
+    "evidence_bundle": "experiments/evidence/demo-real-risk-slice/hybrid-smoke-001",
+    "justification": "The placeholder keeps the minimum fine-tune result tied to the same mixed interaction path used by the M1 real-risk slice."
+  }
+}

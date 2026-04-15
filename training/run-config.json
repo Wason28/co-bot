@@ -1,0 +1,10 @@
+{
+  "run_id": "ft-demo-full-flow-placeholder-001",
+  "model_base": "smolvla-placeholder-v1",
+  "dataset_manifest": "training/dataset-manifest.json",
+  "target_scenario": "demo-full-flow",
+  "epochs": 1,
+  "batch_size": 2,
+  "evidence_bundle": "experiments/evidence/demo-real-risk-slice/hybrid-smoke-001",
+  "notes": "M1 minimum fine-tune placeholder aligned to demo-full-flow and backed by the hybrid real-risk slice evidence bundle."
+}

@@ -1,0 +1,26 @@
+{
+  "dataset_id": "cobot-demo-full-flow-m1-placeholder",
+  "target_scenarios": [
+    "demo-full-flow"
+  ],
+  "samples": [
+    {
+      "sample_id": "sample-001",
+      "task_type": "mixed",
+      "object_id": "red-block",
+      "capture_date": "2026-04-15",
+      "operator": "student",
+      "device_state": "hybrid-m1-real-risk-slice",
+      "evidence_bundle": "experiments/evidence/demo-real-risk-slice/hybrid-smoke-001"
+    },
+    {
+      "sample_id": "sample-002",
+      "task_type": "social",
+      "object_id": "red-block",
+      "capture_date": "2026-04-15",
+      "operator": "student",
+      "device_state": "hybrid-m1-real-risk-slice",
+      "evidence_bundle": "experiments/evidence/demo-real-risk-slice/hybrid-smoke-001"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "scenario_id": "demo-real-risk-slice",
+  "run_id": "hybrid-smoke-001",
+  "attempt_index": 1,
+  "passed": true,
+  "final_state": "completed",
+  "metrics": {
+    "exec_latency_ms": 4800,
+    "face_detected_within_5s": true,
+    "wrist_face_coverage_ratio": 0.72,
+    "expression_motion_count": 2,
+    "confirmation_shown": true
+  },
+  "degradations": [
+    "hybrid-lane1-placeholder-video",
+    "hybrid-lane1-simulated-redis-export"
+  ],
+  "failure_reasons": []
+}
