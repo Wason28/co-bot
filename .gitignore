@@ -16,3 +16,4 @@ __pycache__/
 # Editor / OS noise
 .DS_Store
 Thumbs.db
+.omx/
