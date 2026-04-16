@@ -11,6 +11,7 @@
     "T_exec",
     "decision_latency_ms",
     "exec_latency_ms",
+    "execution_started",
     "within_threshold"
   ],
   "properties": {
@@ -22,6 +23,7 @@
     "T_exec": {"type": "string"},
     "decision_latency_ms": {"type": "integer", "minimum": 0},
     "exec_latency_ms": {"type": "integer", "minimum": 0},
+    "execution_started": {"type": "boolean"},
     "within_threshold": {"type": "boolean"}
   },
   "additionalProperties": false

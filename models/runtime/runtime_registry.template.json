@@ -1,0 +1,22 @@
+{
+  "orchestrator": {
+    "id": "langgraph-runtime-stub-v1",
+    "provider": "langgraph",
+    "mode": "deterministic-supervisor-social-action"
+  },
+  "checkpoint_store": {
+    "id": "checkpoint-json-placeholder-v1",
+    "provider": "filesystem-placeholder",
+    "mode": "json-snapshot"
+  },
+  "memory_store": {
+    "id": "redis-session-placeholder-v1",
+    "provider": "redis-placeholder",
+    "mode": "session-context"
+  },
+  "latency_recorder": {
+    "id": "latency-markers-v1",
+    "provider": "builtin",
+    "mode": "timestamp-instrumentation"
+  }
+}

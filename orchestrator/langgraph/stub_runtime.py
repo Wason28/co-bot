@@ -7,7 +7,11 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from backend.api.app import TaskSubmission, build_submission_event, build_task_status_payload
+from backend.api.app import (
+    TaskSubmission,
+    build_submission_event,
+    build_task_status_payload,
+)
 from orchestrator.policy.policy_gate import evaluate_policy
 
 
@@ -144,6 +148,7 @@ def _base_state(
     profile: ScenarioProfile,
     *,
     model_ids: dict[str, str],
+    runtime_ids: dict[str, str],
     started_at: datetime,
 ) -> dict[str, Any]:
     return {
@@ -164,6 +169,7 @@ def _base_state(
         "last_completed_step": "task-submitted",
         "pending_confirmation_prompt": "",
         "active_model_ids": dict(model_ids),
+        "active_runtime_ids": dict(runtime_ids),
         "latency_marks": {
             "T_start": started_at.isoformat(),
             "T_decision": "",
@@ -237,6 +243,7 @@ def run_stub_scenario(
     attempt_index: int,
     benchmark: dict[str, Any],
     model_registry: dict[str, Any],
+    runtime_registry: dict[str, Any] | None = None,
     started_at: datetime | None = None,
 ) -> RunArtifacts:
     profile = SCENARIO_CATALOG[submission.scenario_id]
@@ -251,15 +258,31 @@ def run_stub_scenario(
         "social": model_registry["social"]["id"],
         "action": model_registry["action"]["id"],
     }
+    runtime_registry = runtime_registry or {}
+    runtime_ids = {
+        "orchestrator": runtime_registry.get("orchestrator", {}).get(
+            "id", "langgraph-runtime-stub-v1"
+        ),
+        "checkpoint_store": runtime_registry.get("checkpoint_store", {}).get(
+            "id", "checkpoint-json-placeholder-v1"
+        ),
+        "memory_store": runtime_registry.get("memory_store", {}).get(
+            "id", "redis-session-placeholder-v1"
+        ),
+        "latency_recorder": runtime_registry.get("latency_recorder", {}).get(
+            "id", "latency-markers-v1"
+        ),
+    }
 
     metadata = {
         "scenario_id": submission.scenario_id,
         "run_id": run_id,
         "attempt_index": attempt_index,
         "benchmark_version": benchmark["version"],
-        "operator": "m1-lane2-stub-runtime",
+        "operator": runtime_ids["orchestrator"],
         "created_at": started_at.isoformat(),
         "model_versions": dict(model_ids),
+        "runtime_versions": dict(runtime_ids),
         "device_versions": {
             "robot_arm": "so-arm101-placeholder-v1",
             "wrist_camera": "usb-cam-placeholder-v1",
@@ -268,7 +291,13 @@ def run_stub_scenario(
         "shared_state_contract": "orchestrator/langgraph/state_schema.json",
     }
 
-    state = _base_state(submission, profile, model_ids=model_ids, started_at=started_at)
+    state = _base_state(
+        submission,
+        profile,
+        model_ids=model_ids,
+        runtime_ids=runtime_ids,
+        started_at=started_at,
+    )
     events = [build_submission_event(submission)]
     checkpoints: dict[str, dict[str, Any]] = {}
     redis_records: dict[str, dict[str, Any]] = {}
@@ -543,26 +572,30 @@ def run_stub_scenario(
             }
         )
 
-    exec_latency_ms = int((t_exec - started_at).total_seconds() * 1000)
+    execution_started = bool(state["latency_marks"]["T_exec"])
+    exec_latency_ms = (
+        int((t_exec - started_at).total_seconds() * 1000) if execution_started else 0
+    )
     latency = {
         "scenario_id": submission.scenario_id,
         "run_id": run_id,
         "attempt_index": attempt_index,
         "T_start": started_at.isoformat(),
         "T_decision": t_route.isoformat(),
-        "T_exec": state["latency_marks"]["T_exec"] or t_exec.isoformat(),
+        "T_exec": state["latency_marks"]["T_exec"],
         "decision_latency_ms": int((t_route - started_at).total_seconds() * 1000),
         "exec_latency_ms": exec_latency_ms,
+        "execution_started": execution_started,
         "within_threshold": exec_latency_ms <= benchmark["latency_threshold_ms"],
     }
 
     failure_reasons: list[str] = []
-    if not latency["within_threshold"]:
+    if execution_started and not latency["within_threshold"]:
         failure_reasons.append("execution exceeded frozen benchmark latency threshold")
-    if submission.scenario_id == "demo-dangerous-action" and state["confirmation_state"] not in {
-        "awaiting_confirm",
-        "rejected",
-    }:
+    if submission.scenario_id == "demo-dangerous-action" and (
+        state["confirmation_state"] not in {"awaiting_confirm", "rejected"}
+        or execution_started
+    ):
         failure_reasons.append("dangerous action was not held at the confirmation boundary")
     if submission.scenario_id == "demo-recovery-memory":
         required_fields = benchmark["scenarios"]["demo-recovery-memory"]["required_fields"]

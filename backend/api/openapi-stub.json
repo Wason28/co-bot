@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Co-Bot Backend Stub API",
-    "version": "0.2.0-m1-demo"
+    "title": "Co-Bot Backend Demo API",
+    "version": "0.3.0-m2-demo"
   },
   "components": {
     "schemas": {
@@ -20,15 +20,17 @@
       },
       "TaskExecutionResponse": {
         "type": "object",
-        "required": ["submission", "policy_decision", "shared_state", "checkpoints", "redis_context", "latency", "events"],
+        "required": ["submission", "policy_decision", "shared_state", "checkpoints", "redis_context", "latency", "events", "model_registry", "runtime_registry"],
         "properties": {
           "submission": {"type": "object"},
           "policy_decision": {"type": "object"},
           "shared_state": {"type": "object"},
-          "checkpoints": {"type": "array", "items": {"type": "object"}},
+          "checkpoints": {"type": "object", "additionalProperties": {"type": "object"}},
           "redis_context": {"type": "object"},
           "latency": {"type": "object"},
-          "events": {"type": "array", "items": {"type": "object"}}
+          "events": {"type": "array", "items": {"type": "object"}},
+          "model_registry": {"type": "object"},
+          "runtime_registry": {"type": "object"}
         }
       }
     }
@@ -36,7 +38,7 @@
   "paths": {
     "/health": {
       "get": {
-        "summary": "Return M1 demo backend health"
+        "summary": "Return M2 demo backend health"
       }
     },
     "/tasks": {
@@ -46,7 +48,7 @@
     },
     "/models": {
       "get": {
-        "summary": "List registered social/action model placeholders"
+        "summary": "List registered model and runtime placeholders"
       }
     }
   }

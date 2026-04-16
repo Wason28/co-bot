@@ -1,5 +1,5 @@
 {
-  "version": "m1-demo",
+  "version": "m2-demo",
   "rules": [
     {
       "scenario_id": "demo-full-flow",

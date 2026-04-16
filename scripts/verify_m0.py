@@ -13,6 +13,7 @@ REQUIRED_PATHS = [
     ROOT / "README.md",
     ROOT / "backend/api/app.py",
     ROOT / "backend/api/openapi-stub.json",
+    ROOT / "models/runtime/runtime_registry.template.json",
     ROOT / "orchestrator/langgraph/state_schema.json",
     ROOT / "orchestrator/policy/policy_gate.schema.json",
     ROOT / "services/robot-mcp/tool_manifest.json",

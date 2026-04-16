@@ -60,6 +60,16 @@
         "action": {"type": "string"}
       }
     },
+    "active_runtime_ids": {
+      "type": "object",
+      "required": ["orchestrator", "checkpoint_store", "memory_store", "latency_recorder"],
+      "properties": {
+        "orchestrator": {"type": "string"},
+        "checkpoint_store": {"type": "string"},
+        "memory_store": {"type": "string"},
+        "latency_recorder": {"type": "string"}
+      }
+    },
     "latency_marks": {
       "type": "object",
       "required": ["T_start", "T_decision", "T_exec"],

@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BENCHMARK_PATH = ROOT / "experiments/benchmarks/m2-benchmark-freeze.json"
 MODEL_REGISTRY_PATH = ROOT / "models/runtime/model_registry.template.json"
+RUNTIME_REGISTRY_PATH = ROOT / "models/runtime/runtime_registry.template.json"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
@@ -41,6 +42,7 @@ def main() -> int:
 
     benchmark = load_json(BENCHMARK_PATH)
     models = load_json(MODEL_REGISTRY_PATH)
+    runtimes = load_json(RUNTIME_REGISTRY_PATH)
     run_id = args.run_id or build_run_id(args.scenario, args.attempt_index)
     bundle_dir = ROOT / "experiments/evidence" / args.scenario / run_id
     bundle_dir.mkdir(parents=True, exist_ok=True)
@@ -58,6 +60,7 @@ def main() -> int:
         attempt_index=args.attempt_index,
         benchmark=benchmark,
         model_registry=models,
+        runtime_registry=runtimes,
         started_at=t_start,
     )
 

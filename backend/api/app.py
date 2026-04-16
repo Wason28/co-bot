@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
 
 BENCHMARK_PATH = ROOT / "experiments/benchmarks/m2-benchmark-freeze.json"
 MODEL_REGISTRY_PATH = ROOT / "models/runtime/model_registry.template.json"
+RUNTIME_REGISTRY_PATH = ROOT / "models/runtime/runtime_registry.template.json"
 
 
 @dataclass(frozen=True)
@@ -58,16 +59,25 @@ def create_task_submission(
 def build_health_payload() -> dict[str, Any]:
     return {
         "service": "backend-api",
-        "mode": "m1-demo",
+        "mode": "m2-demo",
         "status": "ready",
         "capabilities": [
             "task-submit",
             "langgraph-shared-state",
             "policy-gate",
+            "dangerous-action-gate",
             "checkpoint-placeholder",
             "redis-placeholder",
+            "runtime-registry",
             "latency-instrumentation",
         ],
+    }
+
+
+def build_registry_payload() -> dict[str, Any]:
+    return {
+        "models": load_json(MODEL_REGISTRY_PATH),
+        "runtimes": load_json(RUNTIME_REGISTRY_PATH),
     }
 
 
@@ -104,6 +114,8 @@ def build_task_status_payload(shared_state: Mapping[str, Any]) -> dict[str, Any]
         "active_model_ids": dict(shared_state["active_model_ids"]),
         "latency_marks": dict(shared_state["latency_marks"]),
     }
+    if "active_runtime_ids" in shared_state:
+        payload["active_runtime_ids"] = dict(shared_state["active_runtime_ids"])
     if "scenario_id" in shared_state:
         payload["scenario_id"] = shared_state["scenario_id"]
     return payload
@@ -119,13 +131,16 @@ def process_submission(
     from orchestrator.policy.policy_gate import evaluate_policy
 
     benchmark = load_json(BENCHMARK_PATH)
-    model_registry = load_json(MODEL_REGISTRY_PATH)
+    registry_payload = build_registry_payload()
+    model_registry = registry_payload["models"]
+    runtime_registry = registry_payload["runtimes"]
     artifacts = run_stub_scenario(
         submission,
         run_id=run_id or submission.task_id.removeprefix("task-"),
         attempt_index=attempt_index,
         benchmark=benchmark,
         model_registry=model_registry,
+        runtime_registry=runtime_registry,
     )
     policy = evaluate_policy(submission.scenario_id, user_input=submission.input_text)
     redis_context = artifacts.redis_records.get("session-context.json", {})
@@ -176,6 +191,8 @@ def process_submission(
         "latency": artifacts.latency,
         "result": artifacts.result,
         "metadata": artifacts.metadata,
+        "model_registry": model_registry,
+        "runtime_registry": runtime_registry,
         "summary": artifacts.summary,
     }
 
