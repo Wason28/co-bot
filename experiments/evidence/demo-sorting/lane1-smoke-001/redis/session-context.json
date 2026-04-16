@@ -1,0 +1,21 @@
+{
+  "session_id": "session-lane1-smoke-001",
+  "scenario_id": "demo-sorting",
+  "run_id": "lane1-smoke-001",
+  "checkpoint_id": "ckpt-m2-lane1-post-exec",
+  "face_tracking_enabled": false,
+  "expression_sequence": [
+    "acknowledge"
+  ],
+  "latency_marks": {
+    "scenario_id": "demo-sorting",
+    "run_id": "lane1-smoke-001",
+    "attempt_index": 1,
+    "T_start": "2026-04-16T03:34:16+00:00",
+    "T_decision": "2026-04-16T03:34:17.200000+00:00",
+    "T_exec": "2026-04-16T03:34:20.300000+00:00",
+    "decision_latency_ms": 1200,
+    "exec_latency_ms": 4300,
+    "within_threshold": true
+  }
+}

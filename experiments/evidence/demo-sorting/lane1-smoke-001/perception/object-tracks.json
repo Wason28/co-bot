@@ -1,0 +1,17 @@
+{
+  "scenario_id": "demo-sorting",
+  "run_id": "lane1-smoke-001",
+  "target_label": "red-block",
+  "objects": [
+    {
+      "camera_id": "wrist-camera",
+      "label": "red-block",
+      "state": "locked"
+    },
+    {
+      "camera_id": "laptop-camera",
+      "label": "yellow-cup",
+      "state": "context"
+    }
+  ]
+}

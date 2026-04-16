@@ -1,0 +1,19 @@
+{
+  "scenario_id": "demo-conversation-grasp",
+  "run_id": "lane1-smoke-001",
+  "follow_enabled": true,
+  "tracks": [
+    {
+      "timestamp": "2026-04-16T03:34:17.650000+00:00",
+      "camera_id": "laptop-camera",
+      "face_id": "operator-1",
+      "follow_state": "acquired"
+    },
+    {
+      "timestamp": "2026-04-16T03:34:18+00:00",
+      "camera_id": "wrist-camera",
+      "face_id": "operator-1",
+      "follow_state": "handoff-ready"
+    }
+  ]
+}

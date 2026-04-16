@@ -1,5 +1,5 @@
 {
-  "version": "m1-lane1-v1",
+  "version": "m2-lane1-v2",
   "mode": "dual-camera-hybrid-ready",
   "streams": [
     {
@@ -16,6 +16,8 @@
       ],
       "evidence_artifacts": [
         "perception/frame-sources.json",
+        "perception/face-tracks.json",
+        "perception/object-tracks.json",
         "events.jsonl"
       ]
     },
@@ -27,15 +29,78 @@
       "capture_profile": "1280x720@15",
       "required_for": [
         "demo-full-flow",
+        "demo-sorting",
+        "demo-conversation-grasp",
         "demo-dangerous-action",
         "demo-real-risk-slice"
       ],
       "evidence_artifacts": [
         "perception/frame-sources.json",
+        "perception/face-tracks.json",
+        "perception/object-tracks.json",
         "events.jsonl"
       ]
     }
   ],
+  "scenario_profiles": {
+    "demo-full-flow": {
+      "required_camera_ids": [
+        "wrist-camera",
+        "laptop-camera"
+      ],
+      "face_tracking": true,
+      "object_tracking": true,
+      "emotion_motion": true,
+      "evidence_files": [
+        "perception/frame-sources.json",
+        "perception/face-tracks.json",
+        "perception/object-tracks.json",
+        "video/run.mp4"
+      ]
+    },
+    "demo-sorting": {
+      "required_camera_ids": [
+        "wrist-camera",
+        "laptop-camera"
+      ],
+      "face_tracking": false,
+      "object_tracking": true,
+      "emotion_motion": true,
+      "evidence_files": [
+        "perception/frame-sources.json",
+        "perception/object-tracks.json",
+        "video/run.mp4"
+      ]
+    },
+    "demo-conversation-grasp": {
+      "required_camera_ids": [
+        "wrist-camera",
+        "laptop-camera"
+      ],
+      "face_tracking": true,
+      "object_tracking": true,
+      "emotion_motion": true,
+      "evidence_files": [
+        "perception/frame-sources.json",
+        "perception/face-tracks.json",
+        "perception/object-tracks.json",
+        "video/run.mp4"
+      ]
+    },
+    "demo-real-risk-slice": {
+      "required_camera_ids": [
+        "wrist-camera",
+        "laptop-camera"
+      ],
+      "face_tracking": true,
+      "object_tracking": true,
+      "emotion_motion": false,
+      "evidence_files": [
+        "perception/frame-sources.json",
+        "video/run.mp4"
+      ]
+    }
+  },
   "real_risk_slice": {
     "scenario_id": "demo-real-risk-slice",
     "required_camera_ids": [

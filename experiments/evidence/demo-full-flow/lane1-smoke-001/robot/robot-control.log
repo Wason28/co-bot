@@ -1,0 +1,5 @@
+2026-04-16T03:34:17.650000+00:00 tool=follow_face_anchor enabled=true camera=laptop-camera
+2026-04-16T03:34:17.950000+00:00 tool=play_expression_motion sequence=wake,acknowledge,celebrate
+2026-04-16T03:34:22.200000+00:00 tool=move_end_effector target=red-block state=executing
+2026-04-16T03:34:23.050000+00:00 tool=move_end_effector target=red-block state=completed
+required_evidence=robot/robot-control.log,robot/status.jsonl,events.jsonl,checkpoints/pre-exec.json,checkpoints/post-exec.json,redis/session-context.json,perception/frame-sources.json,perception/face-tracks.json,perception/object-tracks.json

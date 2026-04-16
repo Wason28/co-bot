@@ -1,0 +1,2 @@
+{"timestamp": "2026-04-16T03:34:21.600000+00:00", "controller": "so-arm101", "state": "executing", "target_object": "red-block"}
+{"timestamp": "2026-04-16T03:34:22.450000+00:00", "controller": "so-arm101", "state": "completed", "expression_sequence": ["acknowledge", "celebrate"]}

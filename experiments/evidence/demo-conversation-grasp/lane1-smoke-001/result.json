@@ -1,0 +1,18 @@
+{
+  "scenario_id": "demo-conversation-grasp",
+  "run_id": "lane1-smoke-001",
+  "attempt_index": 1,
+  "passed": true,
+  "final_state": "completed",
+  "metrics": {
+    "exec_latency_ms": 5600,
+    "face_detected_within_5s": true,
+    "wrist_face_coverage_ratio": 0.74,
+    "expression_motion_count": 2
+  },
+  "degradations": [
+    "hybrid-lane1-placeholder-video",
+    "hybrid-lane1-deterministic-tracks"
+  ],
+  "failure_reasons": []
+}

@@ -1,14 +1,51 @@
 {
-  "profile": "so-arm101-hybrid-m1",
+  "profile": "so-arm101-hybrid-m2-lane1",
   "controller": "so-arm101",
   "mode": "hybrid",
   "transport": "usb-serial-placeholder",
   "serial_port": "/dev/ttyACM0",
   "baud_rate": 115200,
   "workspace_profile": "desktop-benchmark-v1",
+  "supported_scenarios": [
+    "demo-full-flow",
+    "demo-sorting",
+    "demo-conversation-grasp",
+    "demo-dangerous-action",
+    "demo-real-risk-slice"
+  ],
   "confirmation_required_for": [
     "demo-dangerous-action",
     "demo-real-risk-slice"
   ],
-  "log_artifact": "robot/robot-control.log"
+  "log_artifact": "robot/robot-control.log",
+  "status_log_artifact": "robot/status.jsonl",
+  "face_following": {
+    "enabled_for": [
+      "demo-full-flow",
+      "demo-conversation-grasp"
+    ],
+    "source_camera": "laptop-camera",
+    "handoff_camera": "wrist-camera",
+    "follow_target": "primary-speaker"
+  },
+  "expression_motion_map": {
+    "wake": [
+      "wake"
+    ],
+    "greeting": [
+      "acknowledge"
+    ],
+    "conversation_turn": [
+      "acknowledge"
+    ],
+    "sorting_complete": [
+      "acknowledge"
+    ],
+    "grasp_complete": [
+      "celebrate"
+    ],
+    "session_complete": [
+      "celebrate"
+    ]
+  }
 }

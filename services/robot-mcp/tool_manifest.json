@@ -1,19 +1,25 @@
 {
   "service": "robot-mcp",
-  "mode": "m1-hybrid-ready",
+  "mode": "m2-lane1-hybrid-ready",
   "hardware_target": "so-arm101",
   "workspace_profile": "desktop-benchmark-v1",
   "supported_scenarios": [
     "demo-dangerous-action",
     "demo-full-flow",
+    "demo-sorting",
+    "demo-conversation-grasp",
     "demo-real-risk-slice"
   ],
   "required_evidence": [
     "robot/robot-control.log",
+    "robot/status.jsonl",
     "events.jsonl",
     "checkpoints/pre-exec.json",
     "checkpoints/post-exec.json",
-    "redis/session-context.json"
+    "redis/session-context.json",
+    "perception/frame-sources.json",
+    "perception/face-tracks.json",
+    "perception/object-tracks.json"
   ],
   "tools": [
     {
@@ -34,6 +40,10 @@
     },
     {
       "name": "play_expression_motion",
+      "safe_mode": true
+    },
+    {
+      "name": "follow_face_anchor",
       "safe_mode": true
     },
     {

@@ -1,0 +1,17 @@
+{
+  "scenario_id": "demo-sorting",
+  "run_id": "lane1-smoke-001",
+  "attempt_index": 1,
+  "passed": true,
+  "final_state": "completed",
+  "metrics": {
+    "exec_latency_ms": 4300,
+    "expression_motion_count": 1,
+    "sort_success": true
+  },
+  "degradations": [
+    "hybrid-lane1-placeholder-video",
+    "hybrid-lane1-deterministic-tracks"
+  ],
+  "failure_reasons": []
+}

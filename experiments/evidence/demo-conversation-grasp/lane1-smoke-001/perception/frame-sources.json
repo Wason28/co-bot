@@ -1,0 +1,21 @@
+{
+  "scenario_id": "demo-conversation-grasp",
+  "run_id": "lane1-smoke-001",
+  "sync_mode": "best-effort-timestamp",
+  "frame_sources": [
+    {
+      "camera_id": "wrist-camera",
+      "device_path": "/dev/video0",
+      "mount": "robot-wrist",
+      "frame_format": "jpeg",
+      "capture_profile": "640x480@15"
+    },
+    {
+      "camera_id": "laptop-camera",
+      "device_path": "/dev/video1",
+      "mount": "laptop-bezel",
+      "frame_format": "jpeg",
+      "capture_profile": "1280x720@15"
+    }
+  ]
+}

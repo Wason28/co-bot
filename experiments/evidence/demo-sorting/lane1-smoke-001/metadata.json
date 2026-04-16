@@ -1,0 +1,18 @@
+{
+  "scenario_id": "demo-sorting",
+  "run_id": "lane1-smoke-001",
+  "attempt_index": 1,
+  "benchmark_version": "m0-benchmark-freeze-v1",
+  "operator": "m2-lane1-physical-perception-script",
+  "created_at": "2026-04-16T03:34:16+00:00",
+  "model_versions": {
+    "supervisor": "supervisor-stub-v1",
+    "social": "qwen-placeholder-v1",
+    "action": "smolvla-placeholder-v1"
+  },
+  "device_versions": {
+    "robot_arm": "so-arm101-hybrid-v1",
+    "wrist_camera": "usb-cam-hybrid-v1",
+    "laptop_camera": "builtin-cam-hybrid-v1"
+  }
+}

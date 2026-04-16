@@ -1,12 +1,19 @@
 {
-  "version": "m1-real-risk-device-integration-v1",
+  "version": "m2-lane1-device-integration-v2",
   "scenario_id": "demo-real-risk-slice",
+  "supported_scenarios": [
+    "demo-full-flow",
+    "demo-sorting",
+    "demo-conversation-grasp",
+    "demo-real-risk-slice"
+  ],
   "robot": {
     "manifest_path": "services/robot-mcp/tool_manifest.json",
     "config_template_path": "services/robot-mcp/device_config.template.json"
   },
   "perception": {
     "contract_path": "services/perception/camera_contract.json",
+    "config_template_path": "services/perception/device_config.template.json",
     "rig_template_path": "services/perception/camera_rig.template.json"
   },
   "required_real_components": [
@@ -16,6 +23,12 @@
     "checkpoint-record",
     "redis-record",
     "latency-record"
+  ],
+  "lane1_components": [
+    "dual-camera-frame-sources",
+    "face-tracks",
+    "object-tracks",
+    "expression-motion-log"
   ],
   "log_targets": {
     "robot_control": "logs/robot-control/<run-id>.jsonl",

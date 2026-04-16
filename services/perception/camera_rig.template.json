@@ -2,6 +2,12 @@
   "rig_id": "dual-camera-desktop-rig",
   "deployment_mode": "hybrid",
   "capture_backend": "opencv-placeholder",
+  "supported_scenarios": [
+    "demo-full-flow",
+    "demo-sorting",
+    "demo-conversation-grasp",
+    "demo-real-risk-slice"
+  ],
   "streams": [
     {
       "camera_id": "wrist-camera",
@@ -28,6 +34,21 @@
     "primary_stream": "wrist-camera",
     "context_stream": "laptop-camera",
     "sync_tolerance_ms": 250
+  },
+  "camera_switching": {
+    "operator_default": "laptop-camera",
+    "manipulation_default": "wrist-camera",
+    "preserve_prompt_visibility": true
+  },
+  "face_following": {
+    "enabled_for": [
+      "demo-full-flow",
+      "demo-conversation-grasp"
+    ],
+    "handoff_path": [
+      "laptop-camera",
+      "wrist-camera"
+    ]
   },
   "recording": {
     "frame_event_log_path": "logs/camera-frames/<run-id>.jsonl",

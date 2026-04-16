@@ -1,6 +1,12 @@
 {
-  "profile": "dual-camera-hybrid-m1",
+  "profile": "dual-camera-hybrid-m2-lane1",
   "scenario_id": "demo-real-risk-slice",
+  "supported_scenarios": [
+    "demo-full-flow",
+    "demo-sorting",
+    "demo-conversation-grasp",
+    "demo-real-risk-slice"
+  ],
   "sync_mode": "best-effort-timestamp",
   "frame_sources": [
     {
@@ -18,5 +24,38 @@
       "capture_profile": "1280x720@15"
     }
   ],
-  "evidence_artifact": "perception/frame-sources.json"
+  "evidence_artifact": "perception/frame-sources.json",
+  "face_tracking": {
+    "enabled_for": [
+      "demo-full-flow",
+      "demo-conversation-grasp",
+      "demo-real-risk-slice"
+    ],
+    "follow_strategy": "laptop-to-wrist-handoff",
+    "evidence_artifact": "perception/face-tracks.json"
+  },
+  "object_tracking": {
+    "enabled_for": [
+      "demo-full-flow",
+      "demo-sorting",
+      "demo-conversation-grasp",
+      "demo-real-risk-slice"
+    ],
+    "target_labels": [
+      "red-block",
+      "blue-block",
+      "yellow-cup"
+    ],
+    "evidence_artifact": "perception/object-tracks.json"
+  },
+  "camera_switching": {
+    "operator_default": "laptop-camera",
+    "manipulation_default": "wrist-camera"
+  },
+  "evidence_artifacts": [
+    "perception/frame-sources.json",
+    "perception/face-tracks.json",
+    "perception/object-tracks.json",
+    "video/run.mp4"
+  ]
 }
