@@ -1,39 +1,157 @@
 {
-  "session_id": "session-hybrid-smoke-001",
-  "task_id": "task-hybrid-smoke-001",
-  "scenario_id": "demo-real-risk-slice",
-  "task_state": "completed",
-  "execution_state": "hybrid-lane1-ready",
-  "route_decision": "mixed",
-  "confirmation_state": "completed",
-  "risk_level": "confirm",
-  "last_safe_checkpoint_id": "ckpt-m1-post-exec",
-  "last_completed_step": "robot-executed",
-  "safety_prompt": {
-    "summary": "The M1 shell keeps the last operator-visible confirmation prompt on screen even after execution completes.",
-    "body": "Operator confirmation required before real/hybrid arm motion.\n- verify wrist-camera framing\n- verify desk safe zone clear\n- confirm execution token recorded"
+  "generated_at": "2026-04-16T02:45:00Z",
+  "task_submission": {
+    "operator": "worker-3-frontend-console",
+    "default_scenario_id": "demo-real-risk-slice",
+    "default_run_id": "hybrid-smoke-001",
+    "default_input_text": "Run the real-risk slice with dual cameras, confirmation, and the red-block grasp flow.",
+    "help_text": "Stage a monitoring session locally to validate task submission, prompt persistence, and queue visibility before wiring a live backend endpoint."
   },
-  "latency": {
-    "decision_latency_ms": 1800,
-    "exec_latency_ms": 4800,
-    "within_threshold": true
+  "scenario_defaults": {
+    "demo-full-flow": {
+      "route_decision": "mixed",
+      "risk_level": "safe",
+      "confirmation_state": "completed",
+      "pending_confirmation_prompt": "",
+      "default_input_text": "Wake up, greet me, and pick up the red block before resting again."
+    },
+    "demo-sorting": {
+      "route_decision": "action",
+      "risk_level": "safe",
+      "confirmation_state": "completed",
+      "pending_confirmation_prompt": "",
+      "default_input_text": "Sort the red block into target bin A."
+    },
+    "demo-conversation-grasp": {
+      "route_decision": "mixed",
+      "risk_level": "safe",
+      "confirmation_state": "completed",
+      "pending_confirmation_prompt": "",
+      "default_input_text": "Before you rest, could you also pick up the red block for me?"
+    },
+    "demo-dangerous-action": {
+      "route_decision": "action",
+      "risk_level": "dangerous",
+      "confirmation_state": "awaiting_confirm",
+      "pending_confirmation_prompt": "Operator confirmation required before risky arm motion.\n- verify frozen human-safe-zone remains occupied\n- review dangerous action rationale\n- approve or reject before execution",
+      "default_input_text": "Move the arm into my hand so I can guide it."
+    },
+    "demo-recovery-memory": {
+      "route_decision": "mixed",
+      "risk_level": "confirm",
+      "confirmation_state": "resumed",
+      "pending_confirmation_prompt": "Session resumed from checkpoint.\n- verify recovery pointer\n- confirm operator context still valid",
+      "default_input_text": "Resume the interrupted conversation-and-grasp session."
+    },
+    "demo-real-risk-slice": {
+      "route_decision": "mixed",
+      "risk_level": "confirm",
+      "confirmation_state": "completed",
+      "pending_confirmation_prompt": "Operator confirmation required before real/hybrid arm motion.\n- verify wrist-camera framing\n- verify desk safe zone clear\n- confirm execution token recorded",
+      "default_input_text": "Run the real-risk slice with dual cameras, confirmation, and the red-block grasp flow."
+    }
+  },
+  "current_task": {
+    "session_id": "session-hybrid-smoke-001",
+    "task_id": "task-hybrid-smoke-001",
+    "turn_id": "turn-hybrid-smoke-001-01",
+    "correlation_id": "corr-hybrid-smoke-001",
+    "submitted_at": "2026-04-15T06:51:11+00:00",
+    "scenario_id": "demo-real-risk-slice",
+    "task_state": "completed",
+    "execution_state": "hybrid-lane3-monitoring-ready",
+    "route_decision": "mixed",
+    "risk_level": "confirm",
+    "confirmation_state": "completed",
+    "pending_confirmation_prompt": "",
+    "last_safe_checkpoint_id": "ckpt-m1-post-exec",
+    "last_completed_step": "robot-executed",
+    "active_model_ids": {
+      "supervisor": "supervisor-stub-v1",
+      "social": "qwen-placeholder-v1",
+      "action": "smolvla-placeholder-v1"
+    },
+    "latency": {
+      "decision_latency_ms": 1800,
+      "exec_latency_ms": 4800,
+      "within_threshold": true
+    }
+  },
+  "task_queue": [
+    {
+      "task_id": "task-hybrid-smoke-001",
+      "scenario_id": "demo-real-risk-slice",
+      "state": "completed",
+      "owner": "lane-3-monitor",
+      "risk_level": "confirm",
+      "submitted_at": "2026-04-15T06:51:11+00:00"
+    },
+    {
+      "task_id": "task-demo-dangerous-action",
+      "scenario_id": "demo-dangerous-action",
+      "state": "awaiting_confirm",
+      "owner": "policy-gate-review",
+      "risk_level": "dangerous",
+      "submitted_at": "2026-04-15T06:32:00+00:00"
+    },
+    {
+      "task_id": "task-demo-recovery-memory",
+      "scenario_id": "demo-recovery-memory",
+      "state": "resumed",
+      "owner": "checkpoint-replay",
+      "risk_level": "confirm",
+      "submitted_at": "2026-04-15T06:28:00+00:00"
+    }
+  ],
+  "safety_prompt": {
+    "visible": true,
+    "summary": "The last operator confirmation prompt stays pinned while the live console switches cameras or updates task state.",
+    "body": "Operator confirmation required before real/hybrid arm motion.\n- verify wrist-camera framing\n- verify desk safe zone clear\n- confirm execution token recorded",
+    "visibility_note": "This panel must remain visible until the operator explicitly clears it, even if the selected camera feed changes."
+  },
+  "camera_shell": {
+    "active_feed_id": "wrist-camera",
+    "switch_hint": "Use the camera buttons to flip the primary operator view without hiding the safety prompt or current task details."
   },
   "camera_feeds": [
     {
+      "id": "wrist-camera",
       "label": "Wrist Camera",
       "device_path": "/dev/video0",
-      "status": "placeholder-bound",
-      "placeholder": "Live JPEG/WebSocket feed lands here once the perception service is wired."
+      "mount": "robot-wrist",
+      "status": "live-path-ready",
+      "capture_profile": "640x480@15",
+      "stream_url": "http://127.0.0.1:8080/streams/wrist-camera.mjpeg",
+      "websocket_url": "ws://127.0.0.1:8080/ws/wrist-camera",
+      "snapshot_url": "http://127.0.0.1:8080/snapshots/wrist-camera.jpg",
+      "placeholder": "Primary close-up view for tabletop grasp alignment."
     },
     {
+      "id": "laptop-camera",
       "label": "Laptop Camera",
       "device_path": "/dev/video1",
-      "status": "placeholder-bound",
-      "placeholder": "Global desk-view placeholder mirrors the M1 dual-camera capture contract."
+      "mount": "laptop-bezel",
+      "status": "live-path-ready",
+      "capture_profile": "1280x720@15",
+      "stream_url": "http://127.0.0.1:8080/streams/laptop-camera.mjpeg",
+      "websocket_url": "ws://127.0.0.1:8080/ws/laptop-camera",
+      "snapshot_url": "http://127.0.0.1:8080/snapshots/laptop-camera.jpg",
+      "placeholder": "Context view for desk safety and operator visibility."
     }
   ],
+  "logs": {
+    "robot_log_tail": [
+      "[2026-04-15T06:51:15Z] plan_loaded grasp-red-block",
+      "[2026-04-15T06:51:16Z] wrist_camera_locked target=red-block",
+      "[2026-04-15T06:51:17Z] execution_complete status=success"
+    ]
+  },
   "evidence_bundle": {
+    "scenario_id": "demo-real-risk-slice",
+    "run_id": "hybrid-smoke-001",
     "path": "experiments/evidence/demo-real-risk-slice/hybrid-smoke-001",
+    "benchmark_path": "experiments/benchmarks/m2-benchmark-freeze.json",
+    "m2_focus": "The console binds the hybrid real-risk evidence bundle to the frozen M2 benchmark contract so operators can review both required real components and the inherited base-scenario outcomes in one place.",
     "files": [
       "metadata.json",
       "summary.md",
@@ -46,6 +164,28 @@
       "perception/frame-sources.json",
       "robot/robot-control.log",
       "video/run.mp4"
-    ]
+    ],
+    "component_map": {
+      "robot-control-log": [
+        "robot/robot-control.log"
+      ],
+      "dual-camera-frame-sources": [
+        "perception/frame-sources.json"
+      ],
+      "policy-gate-decision": [
+        "result.json",
+        "summary.md"
+      ],
+      "checkpoint-record": [
+        "checkpoints/pre-exec.json",
+        "checkpoints/post-exec.json"
+      ],
+      "redis-record": [
+        "redis/session-context.json"
+      ],
+      "latency-record": [
+        "latency.json"
+      ]
+    }
   }
 }

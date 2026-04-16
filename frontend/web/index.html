@@ -3,213 +3,435 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Co-Bot M1 Monitoring Shell</title>
+    <title>Co-Bot M2 Frontend Monitoring Interface</title>
     <style>
       :root {
         color-scheme: light;
-        --bg: #f4f1ea;
+        --bg: #f7f1e7;
         --panel: #fffaf2;
-        --ink: #1b1b18;
-        --accent: #9d5c2f;
-        --accent-soft: #f4ddc6;
-        --muted: #6d665f;
-        --border: #d7c8b6;
-        --ok: #2d6a4f;
-        --warn: #b85c00;
+        --panel-strong: #fff3e1;
+        --ink: #1f1c17;
+        --muted: #6a635c;
+        --accent: #8f5027;
+        --accent-soft: #f4dbc6;
+        --border: #dac7b1;
+        --ok: #2f6a4f;
+        --ok-soft: #e6f5eb;
+        --warn: #b8690b;
+        --warn-soft: #fff2df;
+        --danger: #9f3d2d;
+        --danger-soft: #fde9e2;
+        --shadow: 0 18px 40px rgba(69, 47, 23, 0.09);
       }
+
       * {
         box-sizing: border-box;
       }
+
       body {
         margin: 0;
         font-family: "Iowan Old Style", "Palatino Linotype", serif;
-        background: radial-gradient(circle at top, #fff7ed, var(--bg));
+        background: radial-gradient(circle at top, #fff8ef, var(--bg));
         color: var(--ink);
       }
+
       main {
         display: grid;
-        gap: 16px;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 18px;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
         padding: 24px;
       }
+
       section {
         background: var(--panel);
         border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 16px;
-        box-shadow: 0 10px 30px rgba(72, 48, 24, 0.08);
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: var(--shadow);
       }
+
       h1,
       h2,
       h3,
       p {
         margin-top: 0;
       }
-      .hero {
+
+      h1,
+      h2,
+      h3 {
+        color: #2e251b;
+      }
+
+      .hero,
+      .logs,
+      .evidence {
         grid-column: 1 / -1;
       }
+
+      .hero {
+        background: linear-gradient(135deg, rgba(255, 250, 242, 0.96), rgba(255, 239, 219, 0.96));
+      }
+
+      .hero-copy {
+        display: grid;
+        gap: 12px;
+      }
+
       .muted {
         color: var(--muted);
       }
+
+      .pill-row,
+      .button-row,
+      .camera-tabs,
+      .evidence-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
       .pill {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 6px 12px;
+        padding: 7px 12px;
         border-radius: 999px;
+        border: 1px solid transparent;
         background: var(--accent-soft);
         color: var(--accent);
-        font-size: 0.95rem;
+        font-size: 0.94rem;
       }
+
       .pill.ok {
-        background: #e5f4ec;
+        background: var(--ok-soft);
         color: var(--ok);
       }
+
       .pill.warn {
-        background: #fff0df;
+        background: var(--warn-soft);
         color: var(--warn);
       }
-      .kv {
-        display: grid;
-        gap: 8px;
+
+      .pill.danger {
+        background: var(--danger-soft);
+        color: var(--danger);
       }
-      .kv div {
+
+      .layout-stack {
+        display: grid;
+        gap: 14px;
+      }
+
+      .kv,
+      .metric-grid,
+      .summary-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .kv div,
+      .metric-card,
+      .summary-card {
         display: flex;
         justify-content: space-between;
-        gap: 12px;
-        border-bottom: 1px dashed var(--border);
-        padding-bottom: 8px;
+        gap: 16px;
+        align-items: start;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(255, 252, 247, 0.92);
       }
-      .kv div:last-child {
-        border-bottom: 0;
-        padding-bottom: 0;
+
+      .summary-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       }
-      .video-grid {
+
+      .summary-card {
+        flex-direction: column;
+      }
+
+      .summary-card strong {
+        font-size: 1.3rem;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+
+      .metric-card {
+        flex-direction: column;
+      }
+
+      .metric-card span:last-child {
+        font-size: 1.05rem;
+      }
+
+      form {
         display: grid;
         gap: 12px;
       }
-      .video {
-        min-height: 160px;
-        border: 1px dashed var(--border);
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 0.95rem;
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 12px;
         border-radius: 12px;
-        background: linear-gradient(135deg, #f1e6d8, #fffdf8);
+        border: 1px solid var(--border);
+        background: #fffdfa;
+        color: var(--ink);
+      }
+
+      textarea {
+        min-height: 92px;
+        resize: vertical;
+      }
+
+      button {
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        background: var(--accent);
+        color: #fff9f1;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: #f5e9d8;
+        color: var(--accent);
+        border-color: var(--border);
+      }
+
+      button.is-active {
+        background: var(--ok);
+        color: #f3fff7;
+      }
+
+      .status-line {
+        min-height: 22px;
+      }
+
+      .prompt-box,
+      .camera-main,
+      .log-panel,
+      .checklist,
+      .scenario-panel {
+        border: 1px solid var(--border);
+        border-radius: 16px;
         padding: 14px;
+        background: rgba(255, 252, 247, 0.94);
       }
-      .video strong {
-        display: block;
-        margin-bottom: 8px;
-      }
-      .camera-note {
+
+      .prompt-box pre,
+      .log-panel pre,
+      .camera-main pre {
         margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family: "SFMono-Regular", "SFMono", "Cascadia Code", monospace;
+        font-size: 0.92rem;
       }
+
+      .prompt-box {
+        display: grid;
+        gap: 10px;
+      }
+
+      .camera-shell {
+        display: grid;
+        gap: 12px;
+      }
+
+      .camera-tabs button {
+        min-width: 140px;
+      }
+
+      .camera-feed-grid,
+      .checklist,
+      .log-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .camera-feed-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .camera-card {
+        border: 1px dashed var(--border);
+        border-radius: 14px;
+        padding: 14px;
+        background: linear-gradient(135deg, #fffdf8, #f6ebde);
+      }
+
+      .camera-card.is-active {
+        border-style: solid;
+        border-color: var(--ok);
+        background: linear-gradient(135deg, #f4fff8, #edf8f2);
+      }
+
+      .camera-card strong,
+      .checklist-item strong,
+      .event-item strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .camera-meta,
+      .checklist-item,
+      .event-item,
+      .queue-card,
+      .file-card {
+        display: grid;
+        gap: 6px;
+      }
+
+      .log-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+
+      .event-list,
+      .queue-list,
+      .file-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .queue-card,
+      .file-card,
+      .event-item {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px;
+        background: rgba(255, 252, 247, 0.92);
+      }
+
+      code {
+        font-family: "SFMono-Regular", "SFMono", "Cascadia Code", monospace;
+        font-size: 0.92rem;
+      }
+
       ul {
         margin: 0;
         padding-left: 18px;
       }
-      code,
-      pre {
-        font-size: 0.95rem;
+
+      .footnote {
+        font-size: 0.92rem;
       }
-      pre {
-        margin: 0;
-        white-space: pre-wrap;
+
+      @media (max-width: 760px) {
+        main {
+          padding: 16px;
+        }
+
+        section {
+          padding: 16px;
+        }
       }
     </style>
   </head>
   <body>
     <main>
       <section class="hero">
-        <h1>Co-Bot M1 Monitoring Shell</h1>
-        <p class="muted">
-          Frontend shell for live task state, human-visible safety prompts, dual-camera placeholders,
-          and evidence bundle lookup during the M1 real-risk slice.
-        </p>
-        <div id="summary-pills"></div>
+        <div class="hero-copy">
+          <div>
+            <h1>Co-Bot M2 Frontend Monitoring Interface</h1>
+            <p class="muted">
+              Lane 3 operator console for task submission, live task-state monitoring, safety prompt
+              persistence, dual-camera switching, key log visibility, and evidence-bundle review.
+            </p>
+          </div>
+          <div id="summary-pills" class="pill-row"></div>
+          <div id="summary-grid" class="summary-grid"></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Task Submission</h2>
+        <form id="submission-form">
+          <label>
+            Scenario
+            <select id="scenario-select" name="scenario"></select>
+          </label>
+          <label>
+            Run ID
+            <input id="run-id-input" name="runId" />
+          </label>
+          <label>
+            Operator Prompt
+            <textarea id="task-input" name="taskInput"></textarea>
+          </label>
+          <div class="button-row">
+            <button type="submit">Stage Monitoring Session</button>
+            <button type="button" id="reset-form" class="secondary">Reset Defaults</button>
+          </div>
+          <p id="submission-status" class="status-line muted"></p>
+        </form>
+        <div id="scenario-panel" class="scenario-panel" aria-live="polite"></div>
+      </section>
+
+      <section>
+        <h2>Recent Tasks</h2>
+        <div id="task-queue" class="queue-list"></div>
       </section>
 
       <section>
         <h2>Task State</h2>
         <div id="task-state" class="kv"></div>
+        <div id="latency" class="metric-grid"></div>
       </section>
 
       <section>
         <h2>Safety Prompt</h2>
-        <p id="safety-summary" class="muted"></p>
-        <pre id="safety-prompt"></pre>
+        <div id="safety-prompt" class="prompt-box"></div>
       </section>
 
       <section>
-        <h2>Latency</h2>
-        <div id="latency" class="kv"></div>
+        <h2>Live Video & Camera Shell</h2>
+        <div class="camera-shell">
+          <div id="camera-tabs" class="camera-tabs"></div>
+          <div id="camera-main" class="camera-main"></div>
+          <div id="camera-grid" class="camera-feed-grid"></div>
+        </div>
       </section>
 
-      <section>
-        <h2>Live Camera Placeholders</h2>
-        <div id="camera-grid" class="video-grid"></div>
+      <section class="logs">
+        <h2>Key Logs</h2>
+        <div class="log-grid">
+          <div class="log-panel">
+            <h3>Event Timeline</h3>
+            <div id="event-list" class="event-list"></div>
+          </div>
+          <div class="log-panel">
+            <h3>Robot Control Tail</h3>
+            <pre id="robot-log"></pre>
+          </div>
+        </div>
       </section>
 
-      <section>
-        <h2>Evidence Bundle</h2>
-        <p><code id="evidence-path"></code></p>
-        <ul id="evidence-files"></ul>
+      <section class="evidence">
+        <h2>M2 Evidence Bundle Integration</h2>
+        <div id="evidence-badges" class="evidence-badges"></div>
+        <div id="evidence-summary" class="layout-stack"></div>
+        <div id="evidence-checklist" class="checklist"></div>
+        <div id="evidence-files" class="file-list"></div>
       </section>
     </main>
-    <script>
-      const pill = (label, variant = "") =>
-        `<span class="pill ${variant}">${label}</span>`;
-
-      const renderKeyValues = (elementId, rows) => {
-        document.getElementById(elementId).innerHTML = rows
-          .map(([label, value]) => `<div><strong>${label}</strong><span>${value}</span></div>`)
-          .join("");
-      };
-
-      fetch("./mock-state.json")
-        .then((response) => response.json())
-        .then((payload) => {
-          document.getElementById("summary-pills").innerHTML = [
-            pill(`Scenario: ${payload.scenario_id}`),
-            pill(`Task: ${payload.task_state}`, payload.task_state === "completed" ? "ok" : "warn"),
-            pill(`Safety: ${payload.confirmation_state}`, payload.confirmation_state === "completed" ? "ok" : "warn"),
-          ].join(" ");
-
-          renderKeyValues("task-state", [
-            ["session_id", payload.session_id],
-            ["task_id", payload.task_id],
-            ["route_decision", payload.route_decision],
-            ["risk_level", payload.risk_level],
-            ["execution_state", payload.execution_state],
-            ["last_safe_checkpoint_id", payload.last_safe_checkpoint_id],
-            ["last_completed_step", payload.last_completed_step],
-          ]);
-
-          renderKeyValues("latency", [
-            ["T_decision", `${payload.latency.decision_latency_ms} ms`],
-            ["T_exec", `${payload.latency.exec_latency_ms} ms`],
-            ["threshold", payload.latency.within_threshold ? "within 10s gate" : "exceeded"],
-          ]);
-
-          document.getElementById("safety-summary").textContent = payload.safety_prompt.summary;
-          document.getElementById("safety-prompt").textContent = payload.safety_prompt.body;
-
-          document.getElementById("camera-grid").innerHTML = payload.camera_feeds
-            .map(
-              (feed) => `
-                <div class="video">
-                  <strong>${feed.label}</strong>
-                  <p class="camera-note muted">${feed.placeholder}</p>
-                  <p class="camera-note"><code>${feed.device_path}</code></p>
-                  <p class="camera-note">status: <strong>${feed.status}</strong></p>
-                </div>
-              `
-            )
-            .join("");
-
-          document.getElementById("evidence-path").textContent = payload.evidence_bundle.path;
-          document.getElementById("evidence-files").innerHTML = payload.evidence_bundle.files
-            .map((file) => `<li><code>${file}</code></li>`)
-            .join("");
-        });
-    </script>
+    <script src="./app.js"></script>
   </body>
 </html>
